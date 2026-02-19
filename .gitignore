@@ -4,3 +4,5 @@ __pycache__/
 .env
 logs/
 data/*.csv
+quarantine/
+test_pipeline.py

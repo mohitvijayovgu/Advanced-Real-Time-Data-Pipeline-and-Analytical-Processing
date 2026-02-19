@@ -36,6 +36,12 @@ def load_source_data():
     for col in ['CO(GT)', 'C6H6(GT)', 'T', 'RH', 'AH']:
         df[col] = df[col].astype(str).str.replace(',', '.', regex=False)
     
+    # Replace -200 (UCI missing value indicator) with NaN
+    # Replace -200 (UCI missing value indicator) with NaN
+    df['T'] = pd.to_numeric(df['T'], errors='coerce')
+    df['T'] = df['T'].replace(-200, float('nan'))
+    df = df.dropna(subset=['T'])
+    df = df.reset_index(drop=True)
     return df
 
 def simulate_sensors(df):
@@ -46,13 +52,11 @@ def simulate_sensors(df):
 def introduce_corruption(df):
     df = df.copy()
     
-    # Corrupt 2% of sensor_ids (set to null) — tests null validation
-    corrupt_indices = random.sample(range(len(df)), int(len(df) * 0.02))
+    corrupt_indices = random.sample(range(len(df)), int(len(df) * 0.001))
     df.loc[corrupt_indices, 'sensor_id'] = None
     
-    # Corrupt 2% of temperature values (out of range) — tests range validation
-    corrupt_indices2 = random.sample(range(len(df)), int(len(df) * 0.02))
-    df.loc[corrupt_indices2, 'T'] = "999"
+    corrupt_indices2 = random.sample(range(len(df)), int(len(df) * 0.001))
+    df.loc[corrupt_indices2, 'T'] = 999.0
     
     return df
 

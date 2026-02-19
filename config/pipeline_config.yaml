@@ -8,14 +8,18 @@ paths:
   logs_dir: "logs"
 
 validation:
+  required_fields:
+    - sensor_id
+    - timestamp
+  string_to_numeric:
+    - T
+    - RH
+    - CO(GT)
+    - C6H6(GT)
+    - AH
+  temperature_field: T
   temperature_min: -50
   temperature_max: 50
+  humidity_field: RH
   humidity_min: 0
   humidity_max: 100
-
-database:
-  host: "localhost"
-  port: 5432
-  name: "sensor_pipeline"
-  user: "postgres"
-  password: "postgres"
