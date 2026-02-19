@@ -1,0 +1,21 @@
+pipeline:
+  poll_interval: 5
+  chunk_size: 100
+
+paths:
+  data_dir: "data"
+  quarantine_dir: "quarantine"
+  logs_dir: "logs"
+
+validation:
+  temperature_min: -50
+  temperature_max: 50
+  humidity_min: 0
+  humidity_max: 100
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "sensor_pipeline"
+  user: "postgres"
+  password: "postgres"
