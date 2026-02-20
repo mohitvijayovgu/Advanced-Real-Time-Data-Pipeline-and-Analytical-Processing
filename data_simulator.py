@@ -35,8 +35,7 @@ def load_source_data():
     # Fix comma decimals → proper decimals (European format)
     for col in ['CO(GT)', 'C6H6(GT)', 'T', 'RH', 'AH']:
         df[col] = df[col].astype(str).str.replace(',', '.', regex=False)
-    
-    # Replace -200 (UCI missing value indicator) with NaN
+
     # Replace -200 (UCI missing value indicator) with NaN
     df['T'] = pd.to_numeric(df['T'], errors='coerce')
     df['T'] = df['T'].replace(-200, float('nan'))
