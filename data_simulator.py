@@ -32,13 +32,11 @@ def load_source_data():
     df['timestamp'] = df['Date'] + ' ' + df['Time']
     df = df.drop(columns=['Date', 'Time'])
     
-    # Fix comma decimals → proper decimals (European format)
-    for col in ['CO(GT)', 'C6H6(GT)', 'T', 'RH', 'AH']:
-        df[col] = df[col].astype(str).str.replace(',', '.', regex=False)
-
-    # Replace -200 (UCI missing value indicator) with NaN
-    df['T'] = pd.to_numeric(df['T'], errors='coerce')
-    df['T'] = df['T'].replace(-200, float('nan'))
+    # Fix comma decimals AND replace -200 in one pass
+    for col in ['CO(GT)', 'C6H6(GT)', 'T', 'RH', 'AH', 'NOx(GT)', 'NO2(GT)', 'NMHC(GT)']:
+        df[col] = pd.to_numeric(df[col].astype(str).str.replace(',', '.', regex=False), errors='coerce')
+        df[col] = df[col].replace(-200, float('nan'))
+    
     df = df.dropna(subset=['T'])
     df = df.reset_index(drop=True)
     return df

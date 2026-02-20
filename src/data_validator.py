@@ -23,10 +23,12 @@ def validate_numeric_fields(df, filename):
     
     for field in numeric_fields:
         if field in df.columns:
+            before_nulls = df[field].isnull().sum()
             df[field] = pd.to_numeric(df[field], errors='coerce')
-            null_count = df[field].isnull().sum()
-            if null_count > 0:
-                errors.append(f"Column '{field}' has {null_count} non-numeric values")
+            after_nulls = df[field].isnull().sum()
+            new_non_numeric = after_nulls - before_nulls
+            if new_non_numeric > 0:
+                errors.append(f"Column '{field}' has {new_non_numeric} non-numeric values")
     
     return df, errors
 
