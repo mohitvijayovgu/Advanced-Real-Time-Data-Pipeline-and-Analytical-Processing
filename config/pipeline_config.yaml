@@ -11,15 +11,18 @@ validation:
   required_fields:
     - sensor_id
     - timestamp
-  string_to_numeric:
-    - T
-    - RH
-    - CO(GT)
-    - C6H6(GT)
-    - AH
-  temperature_field: T
-  temperature_min: -50
+  numeric_fields:
+    - co
+    - humidity
+    - lpg
+    - smoke
+    - temp
+  boolean_fields:
+    - light
+    - motion
+  temperature_field: temp
+  temperature_min: -10
   temperature_max: 50
-  humidity_field: RH
+  humidity_field: humidity
   humidity_min: 0
   humidity_max: 100

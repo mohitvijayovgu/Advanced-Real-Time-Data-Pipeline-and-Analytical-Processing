@@ -5,6 +5,14 @@ from src.config_loader import load_config
 
 config = load_config()
 
+# Ensure required runtime directories exist BEFORE configuring FileHandler.
+# Without this, FileHandler raises FileNotFoundError at import time if the
+# logs/ (or quarantine/) folder has never been created.
+for _dir in (config['paths']['logs_dir'],
+             config['paths']['data_dir'],
+             config['paths']['quarantine_dir']):
+    os.makedirs(_dir, exist_ok=True)
+
 log_path = os.path.join(config['paths']['logs_dir'], 'pipeline.log')
 logging.basicConfig(
     level=logging.INFO,
